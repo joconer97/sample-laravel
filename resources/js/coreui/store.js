@@ -13,7 +13,8 @@ export default {
     employees : [],
     rooms : [],
     items : [],
-    employeesLabel : []
+    locations : [],
+    tasks : []
   },
   getters: {
     isLoading (state) {
@@ -39,6 +40,12 @@ export default {
     },
     employeesLabel(state){
       return state.employeesLabel
+    },
+    locations(state){
+      return state.locations
+    },
+    tasks(state){
+      return state.tasks
     }
   },
   mutations: {
@@ -72,8 +79,11 @@ export default {
     updateItems(state,payload){
       state.items = payload
     },
-    updateEmployeeLabels(state,payload){
-      state.employeesLabel = payload
+    updateLocations(state,payload){
+      state.locations = payload
+    },
+    updateTasks(state,payload){
+      state.tasks = payload
     }
   },
   actions: {
@@ -98,37 +108,15 @@ export default {
         context.commit('updateItems',response.data.items)
       })
     },
-    getEmployeesLabel(context){
-        var temps = []
-
-        for(let i = 1;i <= 4; i++){
-              new Promise(function(resolve, reject) {
-              try {
-                  var xhr = new XMLHttpRequest();
-                  xhr.open("GET", "https://vuespatest.test/images/label_images/3-arnel/1.jpg");
-                  xhr.responseType = "blob";
-                  xhr.onerror = function() {reject("Network error.")};
-                  xhr.onload = function() {
-                      if (xhr.status === 200) 
-                      {
-                          resolve(xhr.response)
-                          let temp = {name : 'Arnel Joshua',image : xhr.response}
-                          if(temp != undefined){
-                              console.log(i)
-                              temps.push(temp)
-                          }
-                      }
-                      else {reject("Loading error:" + xhr.statusText)}
-                  };
-                  xhr.send();
-              }
-              catch(err) {reject(err.message)}
-          })
-        }
-        context.commit('updateEmployeeLabels',temps)
+    getLocations(context){
+      axios.get('/api/location').then(response => {
+        context.commit('updateLocations',response.data.locations)
+      })
+    },
+    getTasks(context){
+      axios.get('/api/task').then(response => {
+        context.commit('updateTasks',response.data.tasks)
+      })
     }
-  
-  
-
   },
 }

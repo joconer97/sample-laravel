@@ -5,7 +5,9 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\ScheduleController;
 use App\Models\Bed;
+use App\Models\InventoryHistory;
 
 Route::group(['prefix' => 'auth'], function ($router) {
 
@@ -44,6 +46,13 @@ Route::delete('employee/{id}','EmployeeController@destroy');
 
 
 Route::post('attendance','AttendanceController@store');
+Route::post('inventory','InventoryHistoryController@store');
+Route::post('schedule','ScheduleController@store');
+Route::post('location','LocationController@store');
+Route::get('location','LocationController@index');
+Route::get('task','TaskController@index');
+Route::post('task','TaskController@store');
+Route::get('schedule/{id}','ScheduleController@show');
 Route::post('items','ItemsController@store');
 Route::put('items','ItemsController@update');
 Route::get('items','ItemsController@index');

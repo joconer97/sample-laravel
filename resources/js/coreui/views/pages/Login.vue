@@ -54,6 +54,7 @@
 </template>
 <script>
 import { login } from '../../helpers/auth'
+import swal from 'vue-sweetalert2'
 
 export default {
   name: 'Login',
@@ -73,11 +74,13 @@ export default {
 
       login(this.$data.form)
         .then((res) => {
+          this.$swal('Ramashita System Message','Successfully login','success');
           this.$store.commit('loginSuccess', res)
           this.$router.push('/user/dashboard')
         })
         .catch((error) => {
           this.$store.commit('loginFailed', { error })
+          this.$swal('Ramashita System Message','Failed to login','error');
         })
     },
   },

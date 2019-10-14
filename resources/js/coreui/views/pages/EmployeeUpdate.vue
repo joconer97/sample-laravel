@@ -63,15 +63,17 @@
 
         <div style="margin-bottom : 30px">
             <h1>Working Schedule</h1>
-            <div class="form-group col-md-2">
-                <label for="inputStart">Start Time</label>
-                <input type="time" value="08:00" v-model="employee.start_time">
-            </div>
+            <table class="table tabler-border">
+                <th>Day</th>
+                <th>Start Time</th>
+                <th>End Time</th>
 
-            <div class="form-group col-md-2">
-                <label for="inputStart">End Time</label>
-                <input type="time" value="08:00" v-model="employee.end_time">
-            </div>
+                <tr v-for="(sched,index) in schedule" :key="index">
+                    <td>{{sched.day}}</td>
+                    <td><input type="time" value="none" v-model="sched.start_time" class="form-control"></td>
+                    <td><input type="time" value="00:00" v-model="sched.end_time" class="form-control"></td>
+                </tr>
+            </table>
 
             <!-- <div class="form-group col-md-2">
                 <ul>
@@ -112,7 +114,15 @@ export default {
             image : '',
             images : [],
             day : '',
-            link : ''
+            link : '',
+            schedule : [  
+                    {day : 'Monday',start_time : '',end_time : ''},
+                    {day : 'Tuesday',start_time : '',end_time : ''},
+                    {day : 'Wednesday',start_time : '',end_time : ''},
+                    {day : 'Thursday',start_time : '',end_time : ''},
+                    {day : 'Friday',start_time : '',end_time : ''},
+                    {day : 'Saturday',start_time : '',end_time : ''},
+                    ]
         }
     },
     computed : {
@@ -170,7 +180,25 @@ export default {
             })
         },
         getSchedule(){
-            
+            console.log('hello')
+            console.log(this.employee.id)
+
+            axios.get(`/api/schedule/${this.employee.id}`).then(response => {
+                let temp = response.data.schedules
+
+                this.schedule.forEach(sched => {
+                    temp.forEach(t => {
+                        console.log(sched.day + ' == ' + t.day)
+                        console.log(sched.day == t.day)
+                        if(sched.day == t.day){
+                            sched.start_time = t.start_time
+                            sched.end_time = t.end_time
+                            console.log(sched)
+                        }
+                    })
+                })
+
+            })
         }
     },
     created(){
@@ -179,7 +207,7 @@ export default {
 
         this.employee = this.employees.find(employee => employee.id == this.$route.params.id)
         this.loadImages()
-
+        this.getSchedule()
         var d = new Date()
         this.day = d.getDay()
     },

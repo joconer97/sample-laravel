@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Schedule;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
@@ -36,6 +36,11 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         //
+        $schedule = Schedule::create(['user_id' => $request->id,'start_time' => $request->start_time ,'end_time' => $request->end_time,'day' => $request->day]);
+
+        return response()->json([
+            'schedule' => $schedule
+        ],200);
     }
 
     /**
@@ -44,9 +49,14 @@ class ScheduleController extends Controller
      * @param  \App\Schedule  $schedule
      * @return \Illuminate\Http\Response
      */
-    public function show(Schedule $schedule)
+    public function show($id)
     {
         //
+        $sched = Schedule::where('user_id',$id)->get();
+
+        return response()->json([
+            'schedules' => $sched
+        ],200);
     }
 
     /**

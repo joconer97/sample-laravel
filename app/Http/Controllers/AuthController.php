@@ -76,9 +76,14 @@ class AuthController extends Controller
     public function update(Request $request)
     {
         $user = User::find($request->id);
-        $path =  public_path() . '/images/employees/' . $user->profile_pic;
-        unlink($path);
-        $fileName = $this->uploadImage($request->profile_pic);
+
+        if($user->profile_pic != $request->profile_pic){
+            $path =  public_path() . '/images/employees/' . $user->profile_pic;
+            unlink($path);
+            $fileName = $this->uploadImage($request->profile_pic);
+            $user->profile_pic = $fileName;
+        }
+
         $oldDirectory =  public_path() . '/images/label_images/' . $user->id . '-' . $user->firstname;
         $user->firstname = $request->firstname;
         $user->middleinitial = $request->middleinitial;
@@ -89,7 +94,6 @@ class AuthController extends Controller
         $user->city = $request->city;
         $user->landmark = $request->landmark;
         $user->zip = $request->zip;
-        $user->profile_pic = $fileName;
         $user->position = $request->position;
         $user->save();
 
@@ -167,9 +171,9 @@ class AuthController extends Controller
         $user->position = $request->position;
         $user->save();
 
-        $schedule = Schedule::create(['user_id' => $user->id,'start_time' => $request->start_time ,'end_time' => $request->end_time]);
+        // $schedule = Schedule::create(['user_id' => $user->id,'start_time' => $request->start_time ,'end_time' => $request->end_time]);
 
-        $user->schedule = $schedule;
+        // $user->schedule = $schedule;
 
         $directory =  public_path() . '/images/label_images/' . $user->id . '-' . $user->firstname;
 

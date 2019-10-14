@@ -1,7 +1,7 @@
 <template>
     <div>
         <div>
-            <b-card style="background:#fdd6d6" text-variant="white" header="Add new item" class="text-center">
+            <b-card style="background : rgb(153, 51, 51) !important;color:white" header="Add new item" class="text-center">
                 <b-form  @submit.stop.prevent="saveItem">
                     <b-form-row>
                         <label for="category">Category</label>
@@ -26,6 +26,17 @@
                     </b-form-row>
 
                     <b-form-row>
+                        <label for="price">Item Price</label>
+                        <b-input v-model="item.item_price" :state="validationPrice" id="price" type="number"></b-input>
+                        <b-form-invalid-feedback :state="validationPrice">
+                            Please fill the item price
+                        </b-form-invalid-feedback>
+                        <b-form-valid-feedback :state="validationPrice">
+                            Looks Good.
+                        </b-form-valid-feedback>
+                    </b-form-row>
+
+                    <b-form-row>
                         <label for="quantity">Item Quantity</label>
                         <b-input v-model="item.item_quantity" :state="validationQuantity" id="quantity" type="number"></b-input>
                         <b-form-invalid-feedback :state="validationQuantity">
@@ -34,7 +45,7 @@
                         <b-form-valid-feedback :state="validationQuantity">
                             Looks Good.
                         </b-form-valid-feedback>
-                        </b-form-row>
+                    </b-form-row>
                         
                     <b-button type="submit" variant="primary">Save</b-button>
                 </b-form>
@@ -100,7 +111,7 @@ export default {
     components : {InventoryList},
     data(){
         return {
-            item : {item_name : '',item_quantity : 0,item_category : ''},
+            item : {item_name : '',item_quantity : 0,item_category : '',item_price : 0},
             editItem : {},
             addQuantity : 0,
             errorMessage : [],
@@ -122,6 +133,9 @@ export default {
         },
         validationQuantity(){
             return this.item.item_quantity > 0
+        },
+        validationPrice(){
+            return this.item.item_price > 0
         }
     },
     methods : {
@@ -147,9 +161,12 @@ export default {
         saveNewStock(){
             this.editItem.additonal_quantity = this.addQuantity
             this.editItem.choice = 1  
+
+            console.log(this.editItem)
             axios.put('/api/items',this.editItem)
             .then(response => {
-                console.log(response.data)
+                let index = this.items.findIndex(item => item.id === response.data.item.id)
+                this.items[index].item_quantity = response.data.item.item_quantity
             })
             this.$bvModal.hide('bv-modal-addStock')
         },

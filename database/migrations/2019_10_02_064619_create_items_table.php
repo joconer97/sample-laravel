@@ -18,6 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('item_name');
             $table->integer('item_quantity');
             $table->string('item_category');
+            $table->decimal('item_price',8,2);
             $table->timestamps();
         });
     }

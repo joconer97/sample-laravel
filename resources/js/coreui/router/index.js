@@ -31,6 +31,8 @@ import RoomList from '@/views/pages/RoomList'
 import RoomUpdate from '@/views/pages/RoomUpdate'
 import AttendanceRecord from '@/views/pages/AttendanceRecord'
 import Inventory from '@/views/pages/Inventory'
+import TaskActivity from '@/views/pages/TaskActivityCreate'
+import POS from '@/views/pages/POS'
 // Sample route
 import sample from './sample'
 
@@ -57,6 +59,14 @@ export default new Router({
       }
     },
     {
+      path : '/pos',
+      name : 'POS',
+      component : POS,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
       path     : '/user/dashboard',
       redirect : '/dashboard',
       name     : 'Home',
@@ -69,6 +79,11 @@ export default new Router({
           path     : '/dashboard',
           name     : 'Dashboard',
           component: Dashboard,
+        },
+        {
+          path     : '/task',
+          name     : 'Task',
+          component: TaskActivity,
         },
         {
           path : '/inventory',

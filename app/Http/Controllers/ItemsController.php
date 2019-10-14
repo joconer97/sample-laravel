@@ -45,6 +45,7 @@ class ItemsController extends Controller
         $item->item_name = $request->item_name;
         $item->item_quantity = $request->item_quantity;
         $item->item_category = $request->item_category;
+        $item->item_price =$request->item_price;
         $item->save();
 
         return response()->json([
@@ -85,13 +86,26 @@ class ItemsController extends Controller
     {
         //
         $item = Items::find($request->id);
-        $item->item_quantity += $request->additonal_quantity;
-        $item->item_name = $request->item_name;
-        $item->item_category = $request->item_category;
-        $item->save();
+        
+        if($request->additonal_quantity== null)
+        {
+            $item->item_quantity = $request->item_quantity;
+            $item->item_name = $request->item_name;
+            $item->item_category = $request->item_category;
+            $item->item_price = $request->item_price;
+            $item->save();
+        }
+        else
+        {
+            $item->item_quantity += $request->additonal_quantity;
+            $item->item_name = $request->item_name;
+            $item->item_category = $request->item_category;
+            $item->item_price = $request->item_price;
+            $item->save();
+        }
 
         return response()->json([
-            'item' => $item
+            'item' => $item,
         ],200);
     }
 

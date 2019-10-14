@@ -8,34 +8,25 @@
 
         <div class="row" style="background:green;height:600px">
             <div class="col-md-8" style="background:blue">
-                <template v-if="isOn">
-                    <attendance-camera :employee="employee"></attendance-camera>
-                </template>
-                <template v-else>
-                    <div>
-                        Waiting...
-                    </div>
-                </template>
+                <attendance-camera :employee="employee" v-show="isOn"></attendance-camera>
             </div>
 
             <div class="col-md-4">
-                <table>
-                    <tr v-for="history in attendanceHistory" :key="history.id">
-                        <td><img :src="`/images/employees/`+history.profile_pic" height="180" width="180" alt=""></td>
-                        <td>{{history.firstname}}</td>
-                        <td>{{history.lastname}}</td>
-                    </tr>
-                </table>
+                <b-card no-body class="overflow-hidden" style="max-width: 540px;" v-for="(history,index) in attendanceHistory" :key="index">
+                    <b-row no-gutters>
+                    <b-col md="6">
+                        <b-card-img :src="`/images/employees/`+history.profile_pic"  height="150" width="150x" class="rounded mx-auto d-block"></b-card-img>
+                    </b-col>
+                    <b-col md="6">
+                        <b-card-body :title="history.firstname">
+                        <b-card-text>
+                            <p>{{history.firstname}}   {{history.lastname}}</p>
+                        </b-card-text>
+                        </b-card-body>
+                    </b-col>
+                    </b-row>
+                </b-card>
             </div>
-        </div>
-
-        <div class="row">
-            <table>
-                <tr v-for="employee in employees" :key="employee.id">
-                    <td>{{employee.id}}</td>
-                    <td>{{employee.firstname}}</td>
-                </tr>
-            </table>
         </div>
     </div>
 </template>
@@ -67,33 +58,9 @@ export default {
         },
         getEmployee(id){
             let index = this.employees.findIndex(employee => employee.id == id)
-
+            this.employee = this.employees[index]
+            bus.$emit('searchEmployee',this.employee)
             return this.employees[index]
-        },
-        loadLabeledImages() {
-            var labels = []
-            this.employees.forEach(employee => {
-                labels.push(employee.id + '-' + employee.firstname)
-            })
-    
-
-            return Promise.all(
-                labels.map(async label => {
-                    const descriptions = []
-                    for (let i = 1; i <= 4; i++) {
-                        try{
-                            const img = await faceapi.fetchImage(`https://vuespatest.test/images/label_images/${label}/${i}.jpg`)
-                            const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor()
-                            descriptions.push(detections.descriptor)
-                            }catch(err){
-                                console.log(err)
-                            }
-                                    
-                    }
-
-                    return new faceapi.LabeledFaceDescriptors(label, descriptions)
-                })
-            )
         }
     },
     computed : {
@@ -109,14 +76,11 @@ export default {
         
     },
     created(){
-        setTimeout(() => {
-            this.loadLabeledImages()
-        },10000)
         bus.$on('testing', (data) => {
             var today = new Date();
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             var attendance = {user_id : data.id,attendance : time}
-            console.log(attendance)
+
             axios.post('/api/attendance',attendance)
                 .then(response => {
                     console.log(response)

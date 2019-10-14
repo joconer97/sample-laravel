@@ -19,12 +19,12 @@ export default {
       },
     },
     {
-      name: 'Staff Monitoring',
+      name: 'Task Monitoring',
       url : '/theme/colors',
       icon: 'icon-people',
     },
     {
-      name: 'Financial Monitoring',
+      name: 'Payroll',
       url : '/theme/typography',
       icon: 'icon-book-open',
     },
@@ -72,7 +72,7 @@ export default {
       ]
     },
     {
-      name    : 'Inventory Module',
+      name    : 'Item Module',
       url     : '/inventory',
       icon    : 'icon-puzzle',
     },
@@ -87,8 +87,8 @@ export default {
       icon    : 'icon-cursor',
     },
     {
-      name: 'Settings',
-      url : '/charts',
+      name: 'Task Activity',
+      url : '/task',
       icon: 'icon-pie-chart',
     },
   ],

@@ -52,18 +52,30 @@
             </div>
         </div>
         <div class="form-row">
-             <select id="inputState" class="form-control" v-model="employee.position">
+             <select id="inputPosition" class="form-control" v-model="employee.position">
                 <option>Admin</option>
                 <option>Manager</option>
                 <option>Housewife</option>
                 <option>Maintenance</option>
+                <option>Timekeeper</option>
                 <option>Chef</option>
             </select>
         </div>
 
         <div style="margin-bottom : 30px">
             <h1>Working Schedule</h1>
-            <div class="form-group col-md-2">
+            <table class="table tabler-border">
+                <th>Day</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+
+                <tr v-for="(sched,index) in schedule" :key="index">
+                    <td>{{sched.day}}</td>
+                    <td><input type="time" value="none" v-model="sched.start_time" class="form-control"></td>
+                    <td><input type="time" value="00:00" v-model="sched.end_time" class="form-control"></td>
+                </tr>
+            </table>
+            <!-- <div class="form-group col-md-2">
                 <label for="inputStart">Start Time</label>
                 <input type="time" value="08:00" v-model="employee.start_time">
             </div>
@@ -71,7 +83,7 @@
             <div class="form-group col-md-2">
                 <label for="inputStart">End Time</label>
                 <input type="time" value="08:00" v-model="employee.end_time">
-            </div>
+            </div> -->
 
             <!-- <div class="form-group col-md-2">
                 <ul>
@@ -104,6 +116,8 @@
 </template>
 <script>
 import {cities} from '../../helpers/cities.js'
+import swal from 'vue-sweetalert2'
+
 export default {
     data(){
         return{
@@ -121,26 +135,38 @@ export default {
                 zip : '4000',
                 profile_pic : '',
                 images : [],
-                start_time : '08:00',
-                end_time : '08:00',
+                id : ''
                 },
         }
     },
     computed : {
-    cities(){
-            return cities()
+        cities(){
+                return cities()
+        },
+        schedule(){
+            return  [
+                    {day : 'Monday',start_time : '',end_time : ''},
+                    {day : 'Tuesday',start_time : '',end_time : ''},
+                    {day : 'Wednesday',start_time : '',end_time : ''},
+                    {day : 'Thursday',start_time : '',end_time : ''},
+                    {day : 'Friday',start_time : '',end_time : ''},
+                    {day : 'Saturday',start_time : '',end_time : ''},
+                ]
         }
+    
     },
     methods : {
         createEmployee(){
             axios.post('/api/auth/register',this.employee).then(response =>{
                 if (response.status == 200) {
+                    this.id = response.data.employee.id
+                    this.uploadSchedule()
                     this.$store.getters.employees.push(response.data.employee)
                     this.$router.push('/employee')
                 }
             })
         },
-       imageChange(e){
+        imageChange(e){
             var fileReader = new FileReader();
 
             fileReader.readAsDataURL(e.target.files[0]);
@@ -151,9 +177,6 @@ export default {
                 }
             },
         uploadFacialModel(e){
-            
-
-            
             var files = e.target.files
 
             Array.from(files).forEach(file => {
@@ -167,6 +190,43 @@ export default {
                     });
 
         },
+        uploadSchedule(){
+
+                console.log('true')
+                this.schedule.forEach(sched => {
+                    if(sched.start_time != '' && sched.end_time != ''){
+                        sched.id = this.id
+                        console.log(sched)
+                        axios.post('/api/schedule',sched)
+                            .then(response => {
+                                console.log(response)
+                            })
+                    }
+                    
+            })
+            
+        },
+        validateSchedule(){
+            let isGood = true
+
+            this.schedule.forEach(sched => {
+                if(sched.start_time != '' && sched.end_time != ''){
+                    console.log(sched.day)
+                }
+                else if(sched.start_time != '' && sched.end_time == ''){
+                    this.$swal('Ramashita System Message','There are error in ' + sched.day,'error');
+                    isGood = false
+                }
+                else if(sched.start_time == '' && sched.end_time != '')
+                {
+                    this.$swal('Ramashita System Message','There are error in ' + sched.day,'error');
+                    isGood = false
+                }
+            
+            })
+
+            return isGood
+        }
     }
 }
 </script>
