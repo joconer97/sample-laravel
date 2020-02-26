@@ -34,7 +34,7 @@ export default {
     this.renderChart({
       labels: [
         'January',
-        '',
+        'February',
         '',
         '',
         '',

@@ -14,7 +14,9 @@ export default {
     rooms : [],
     items : [],
     locations : [],
-    tasks : []
+    tasks : [],
+    inventoryReports : [],
+    inventoryReportsDay : []
   },
   getters: {
     isLoading (state) {
@@ -46,7 +48,14 @@ export default {
     },
     tasks(state){
       return state.tasks
-    }
+    },
+    inventoryReports(state){
+      return state.inventoryReports
+    },
+    inventoryReportsDay(state){
+      return state.inventoryReportsDay
+    },
+    
   },
   mutations: {
     login (state) {
@@ -84,6 +93,12 @@ export default {
     },
     updateTasks(state,payload){
       state.tasks = payload
+    },
+    updateInventoryReports(state,payload){
+      state.inventoryReports = payload
+    },
+    updateInventoryReportsDay(state,payload){
+      state.inventoryReportsDay = payload
     }
   },
   actions: {
@@ -116,6 +131,13 @@ export default {
     getTasks(context){
       axios.get('/api/task').then(response => {
         context.commit('updateTasks',response.data.tasks)
+      })
+    },
+    getInventoryReports(context){
+      axios.get('/api/inventory').then(response => {
+        context.commit('updateInventoryReports',response.data.inventoryMonth)
+        context.commit('updateInventoryReportsDay',response.data.inventoryDay)
+
       })
     }
   },

@@ -2,13 +2,14 @@
 import { Line } from 'vue-chartjs'
 
 const brandPrimary = '#20a8d8'
+const brandInfo    = '#63c2de'
 const datasets     = [
   {
     label          : 'My First dataset',
     backgroundColor: brandPrimary,
     borderColor    : 'rgba(255,255,255,.55)',
     data           : [
-      65,
+      1,
       59,
       84,
       84,
@@ -17,6 +18,49 @@ const datasets     = [
       40,
     ],
   },
+  {
+    label          : 'My Second dataset',
+    backgroundColor: brandInfo,
+    borderColor    : 'rgba(255,255,255,.55)',
+    data           : [
+      5,
+      2,
+      120,
+      504,
+      51,
+      55,
+      40,
+    ],
+  },
+  {
+    label          : 'My First dataset',
+    backgroundColor: brandPrimary,
+    borderColor    : 'rgba(255,255,255,.55)',
+    data           : [
+      1,
+      59,
+      84,
+      84,
+      51,
+      55,
+      40,
+    ],
+  },
+  {
+    label          : 'My First dataset',
+    backgroundColor: brandPrimary,
+    borderColor    : 'rgba(255,255,255,.55)',
+    data           : [
+      1,
+      59,
+      84,
+      84,
+      51,
+      55,
+      40,
+    ],
+  },
+  
 ]
 
 export default {
@@ -32,6 +76,11 @@ export default {
         'May',
         'June',
         'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
       ],
       datasets: datasets,
     }, {

@@ -47,6 +47,7 @@ Route::delete('employee/{id}','EmployeeController@destroy');
 
 Route::post('attendance','AttendanceController@store');
 Route::post('inventory','InventoryHistoryController@store');
+Route::get('inventory','InventoryHistoryController@index');
 Route::post('schedule','ScheduleController@store');
 Route::post('location','LocationController@store');
 Route::get('location','LocationController@index');

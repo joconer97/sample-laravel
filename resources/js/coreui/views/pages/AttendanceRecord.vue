@@ -1,24 +1,31 @@
 <template>
-    <div style="margin-bottom : 10px">
-        <h1>Camera</h1>
-        <div class="row" style="background:red;margin:0 auto">
+    <div style="margin-bottom : 10px;background : rgb(153, 51, 51) !important;color:white"> 
+        <h1 class="display-4">RAMASHINTA DAILY TIME RECORDER</h1>
+        <hr>
+        <br>
+        <div class="row" style="margin:0 auto">
             <input type="text" placeholder="Employee #" v-model="employeeID">
-            <button class="btn btn-primary" @click="switchCamera">Enter</button>
+            <button class="btn btn-danger" @click="switchCamera">Enter</button>
         </div>
 
-        <div class="row" style="background:green;height:600px">
-            <div class="col-md-8" style="background:blue">
-                <attendance-camera :employee="employee" v-show="isOn"></attendance-camera>
+        <center><span><p class="display-4">{{time}}</p></span></center>
+        <div class="row" style="height:600px">
+            <div class="col-md-8" >
+                <h1>Camera</h1>
+                <div style="border : 1px solid black">
+                    <attendance-camera :employee="employee" v-show="isOn"></attendance-camera>
+                </div>
             </div>
 
             <div class="col-md-4">
-                <b-card no-body class="overflow-hidden" style="max-width: 540px;" v-for="(history,index) in attendanceHistory" :key="index">
+                <h1>Previous Attendance</h1>
+                <b-card no-body class="overflow-hidden" style="max-width: 540px;padding:5px;margin:5px;color:black" v-for="(history,index) in attendanceHistory" :key="index">
                     <b-row no-gutters>
                     <b-col md="6">
-                        <b-card-img :src="`/images/employees/`+history.profile_pic"  height="150" width="150x" class="rounded mx-auto d-block"></b-card-img>
+                        <b-card-img :src="`/images/employees/`+history.profile_pic"  height="200" width="90x" class="rounded"></b-card-img>
                     </b-col>
                     <b-col md="6">
-                        <b-card-body :title="history.firstname">
+                        <b-card-body :title="history.attendance">
                         <b-card-text>
                             <p>{{history.firstname}}   {{history.lastname}}</p>
                         </b-card-text>
@@ -40,7 +47,8 @@ export default {
             employeeID : undefined,
             isOn : false,
             attendanceHistory : [],
-            employee : null
+            employee : null,
+            time : ''
         }
     },
     components : {AttendanceCamera},
@@ -76,17 +84,27 @@ export default {
         
     },
     created(){
+        setInterval(() => {
+                var time = new Date();
+                this.time = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric',second : 'numeric', hour12: true })
+        },100)
+
         bus.$on('testing', (data) => {
             var today = new Date();
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-            var attendance = {user_id : data.id,attendance : time}
+            var time = today.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric',second : 'numeric', hour12: false })
+            var attendance = {user_id : data.id,attendance : time,firstname : data.firstname,lastname : data.lastname,profile_pic : data.profile_pic}
+            let counter = 0
 
-            axios.post('/api/attendance',attendance)
+            if(counter == 0){
+                axios.post('/api/attendance',attendance)
                 .then(response => {
-                    console.log(response)
+                    if(response.status == 200){
+                        this.attendanceHistory.push(attendance)
+                        this.isOn = false
+                    }
                 })
-            this.attendanceHistory.push(data)
-            this.isOn = false
+                counter++
+            }
         })
     }
 }

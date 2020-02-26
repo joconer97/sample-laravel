@@ -117,7 +117,8 @@ export default {
             errorMessage : [],
             options : [
                 {value : 'Beverages',text : 'Beverages'},
-                {value : 'Junk Food',text : 'Junk Food'}
+                {value : 'Junk Food',text : 'Junk Food'},
+                {value : 'Alcohol',text : 'Alcohol'},
                 ]
         }
     },

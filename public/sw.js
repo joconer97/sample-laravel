@@ -34,14 +34,14 @@ var __wpo = {
     "7c5c89df51787668530a1108e27db70b6b44d3af": "/images/6.jpg?6423e2e662718dd7f20fb7c89b742a9d",
     "aeb87adf968b2dd10cfeb5a592b5d418b5faf343": "/images/7.jpg?f9e66d23438ea709be513b60f66dcb17",
     "8814a8092fc112ba3895b36bef4205b10df3313b": "/images/8.jpg?960f2560c90216e7e7d715a3470d7080",
-    "25643cd45bf0a899921b3c45d814d3d58dfb7d0b": "/js/app.js",
+    "514b959e0a8125ee7dd165cad836aeca6666d54d": "/js/app.js",
     "9432ad7e2c33b0904817f16f9a4bcef363a592ed": "/js/manifest.js",
     "f2cb87d60b42da694e668d6b32563accddf04a57": "/js/vendor.js",
     "632de2f197e582e57ce27aeeef2bdb39aa2626f2": "/css/app.css"
   },
   "strategy": "changed",
   "responseStrategy": "network-first",
-  "version": "10/14/2019, 1:33:01 PM",
+  "version": "1/19/2020, 9:13:29 PM",
   "name": "webpack-offline",
   "pluginVersion": "5.0.7",
   "relativePaths": false

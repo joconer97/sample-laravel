@@ -33,8 +33,10 @@ import AttendanceRecord from '@/views/pages/AttendanceRecord'
 import Inventory from '@/views/pages/Inventory'
 import TaskActivity from '@/views/pages/TaskActivityCreate'
 import POS from '@/views/pages/POS'
+import MobileOrder from '@/views/pages/MobileOrder'
 // Sample route
 import sample from './sample'
+
 
 Vue.use(Router)
 
@@ -54,6 +56,14 @@ export default new Router({
       path : '/attendance',
       name : 'Attendance',
       component : AttendanceRecord,
+      meta : {
+        requiresAuth : true
+      }
+    },
+    {
+      path : '/mobile',
+      name : 'MobileOrder',
+      component : MobileOrder,
       meta : {
         requiresAuth : true
       }

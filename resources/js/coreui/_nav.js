@@ -91,5 +91,10 @@ export default {
       url : '/task',
       icon: 'icon-pie-chart',
     },
+    {
+      name: 'Point of sales',
+      url : '/pos',
+      icon: 'icon-pie-chart',
+    },
   ],
 }

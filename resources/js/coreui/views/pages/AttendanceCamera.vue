@@ -1,5 +1,5 @@
 <template>
-    <body>
+    <body style="background:none">
         <video id="video" autoplay muted style="col-md-8" height="500" width="600"></video>
     </body>
 
@@ -64,7 +64,6 @@ export default {
                     if(this.employee.id == temp.slice(0,temp.indexOf('-')) && counter == 0){
                         counter++
                         bus.$emit('testing',this.employee);
-                        this.showInformation(result.toString())
                         clearInterval(myInterval)
                     }
                             // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
@@ -103,30 +102,6 @@ export default {
             let index = this.employees.findIndex(employee => employee.id == id)
 
             return this.employees[index]
-        },
-        showInformation(name){
-            this.boxTwo = ''
-            this.$bvModal.msgBoxConfirm('Please confirm that you want to ' + name, {
-            title: 'Please Confirm',
-            size: 'sm',
-            buttonSize: 'sm',
-            okVariant: 'danger',
-            okTitle: 'YES',
-            cancelTitle: 'NO',
-            footerClass: 'p-2',
-            hideHeaderClose: false,
-            centered: true
-            })
-            .then(value => {
-                //value is true of false
-                if(!value){
-                    return
-                }
-                this.remove(id)
-            })
-            .catch(err => {
-                // An error occurred
-            })
         },
         initializeCamera(employee){
             this.initializeVideoAndModel()

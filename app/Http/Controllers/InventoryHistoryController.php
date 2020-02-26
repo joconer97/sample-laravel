@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InventoryHistory;
 use Illuminate\Http\Request;
+use App\Models\InventoryHistory;
+use Illuminate\Support\Facades\DB;
 
 class InventoryHistoryController extends Controller
 {
@@ -15,6 +16,21 @@ class InventoryHistoryController extends Controller
     public function index()
     {
         //
+        $inventoryMonth = DB::select('SELECT X.item_id,MONTH(X.created_at)  AS date ,SUM(X.quantity) as total,Y.item_name FROM inventory_histories AS X
+                                        JOIN ITEMS AS Y ON Y.id = X.item_id
+                                        GROUP BY MONTH(X.created_at),X.item_id', [1]);
+
+        $inventoryDay = DB::select('SELECT X.item_id,DAY(X.created_at) as day,MONTH(X.created_at) as month,SUM(X.quantity) AS total,Y.item_name
+                                    FROM INVENTORY_HISTORIES AS X
+                                    JOIN ITEMS AS Y ON Y.ID = X.item_id
+                                    WHERE MONTH(X.created_at) = MONTH(NOW())
+                                    GROUP BY X.item_id,DAY(X.created_at),MONTH(X.created_at)
+                                    ORDER BY MONTH(X.created_at),DAY(X.created_at)', [1]);
+
+        return response()->json([
+            'inventoryMonth' => $inventoryMonth,
+            'inventoryDay' => $inventoryDay
+        ],200);
     }
 
     /**

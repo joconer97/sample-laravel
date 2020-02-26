@@ -158,7 +158,7 @@
             Traffic
           </h4>
           <div class="small text-muted">
-            November 2017
+            October 2019
           </div>
         </b-col>
         <b-col
@@ -187,20 +187,21 @@
               <b-form-radio
                 class="mx-0"
                 value="Day"
+                @click="dayReports"
               >
-                Day
+                <span @click="dayReports">Day</span>
               </b-form-radio>
               <b-form-radio
                 class="mx-0"
                 value="Month"
               >
-                Month
+              <span @click="monthsReports">Month</span>
               </b-form-radio>
               <b-form-radio
                 class="mx-0"
                 value="Year"
               >
-                Year
+                <span @click="yearReports">Month</span>
               </b-form-radio>
             </b-form-radio-group>
           </b-button-toolbar>
@@ -890,6 +891,7 @@ import CardBarChartExample from './dashboard/CardBarChartExample'
 import MainChartExample from './dashboard/MainChartExample'
 import SocialBoxChartExample from './dashboard/SocialBoxChartExample'
 import CalloutChartExample from './dashboard/CalloutChartExample'
+import {bus} from '../../main.js'
 import { Callout } from '@/components'
 export default {
   name      : 'Dashboard',
@@ -988,6 +990,15 @@ export default {
     }
   },
   methods: {
+    dayReports(){
+      bus.$emit('reportDays','hello world dash')
+    },
+    monthsReports(){
+      bus.$emit('reportMonth','hello world month')
+    },
+    yearReports(){
+      bus.$emit('reportDays','hello world dash')
+    },
     variant (value) {
       let $variant
       if (value <= 25)
