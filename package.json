@@ -76,7 +76,7 @@
     "node-pre-gyp": "^0.13.0",
     "paymaya-node-sdk": "^0.1.0",
     "popper.js": "^1.15.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "select2": "^4.0.10",
     "select2-bootstrap4-theme": "^1.0.0",
     "simple-line-icons": "^2.4.1",
